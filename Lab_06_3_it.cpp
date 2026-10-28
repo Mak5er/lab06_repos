@@ -9,54 +9,6 @@
 
 using namespace std;
 
-// Прототипи функцій
-int SumSq(const int* a, const int size);
-
-template <typename T>
-T SumSq(const T* a, const int size);
-
-template <typename T>
-void Print(const T* a, const int size);
-
-int main()
-{
-    const int n = 6;
-    int a[n] = { 1, -2, 3, 4, -5, 6 };              // тестовий цілочисельний масив
-    double b[n] = { 1.5, -2.0, 3.5, 4.0, -1.0, 2.5 }; // тестовий дійсний масив
-
-    cout << "=========================================================================" << endl;
-    cout << " Лабораторна робота № 6.3 (ітераційний спосіб) | Варіант 23" << endl;
-    cout << " Завдання: обчислення суми квадратів елементів масиву чисел" << endl;
-    cout << "=========================================================================" << endl;
-
-    cout << " Масив a (int):    ";
-    Print(a, n);
-
-    cout << " Масив b (double): ";
-    Print(b, n);
-    cout << "-------------------------------------------------------------------------" << endl;
-
-    // 1. Виклик звичайної функції для int
-    int s1 = SumSq(a, n);
-
-    // 2. Виклик шаблонної функції для int
-    int s2 = SumSq<int>(a, n);
-
-    // 3. Виклик шаблонної функції для double
-    double s3 = SumSq<double>(b, n);
-
-    // Виведення зведеної таблиці результатів
-    cout << "\n+---------------------------------------------------+--------------+" << endl;
-    cout << "| Виклик функції                                    |   Результат  |" << endl;
-    cout << "+---------------------------------------------------+--------------+" << endl;
-    cout << "| SumSq(a, n)         [звичайна функція, int]       | " << setw(12) << s1 << " |" << endl;
-    cout << "| SumSq<int>(a, n)    [шаблон функції, int]         | " << setw(12) << s2 << " |" << endl;
-    cout << "| SumSq<double>(b, n) [шаблон функції, double]      | " << setw(12) << fixed << setprecision(2) << s3 << " |" << endl;
-    cout << "+---------------------------------------------------+--------------+" << endl;
-
-    return 0;
-}
-
 // Спосіб 1: Звичайна ітераційна функція для масиву цілих чисел (int)
 int SumSq(const int* a, const int size)
 {
@@ -83,4 +35,31 @@ void Print(const T* a, const int size)
     for (int i = 0; i < size; i++)
         cout << setw(8) << a[i];
     cout << endl;
+}
+
+int main()
+{
+    const int n = 6;
+    int a[n] = { 1, -2, 3, 4, -5, 6 }; // тестовий цілочисельний масив
+
+    cout << "Array a (int):" << endl;
+    Print(a, n);
+
+    // Виклик звичайної функції
+    int s1 = SumSq(a, n);
+    cout << "SumSq(a, n) [non-template] = " << s1 << endl;
+
+    // Виклик шаблонної функції, спеціалізованої для int
+    int s2 = SumSq<int>(a, n);
+    cout << "SumSq<int>(a, n) [template] = " << s2 << endl;
+
+    // Перевірка шаблонної функції на масиві дійсних чисел (double)
+    double b[n] = { 1.5, -2.0, 3.5, 4.0, -1.0, 2.5 };
+    cout << "\nArray b (double):" << endl;
+    Print(b, n);
+
+    double s3 = SumSq<double>(b, n);
+    cout << "SumSq<double>(b, n) [template] = " << s3 << endl;
+
+    return 0;
 }

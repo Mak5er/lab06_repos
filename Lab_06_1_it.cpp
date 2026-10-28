@@ -11,64 +11,7 @@
 
 using namespace std;
 
-// Прототипи функцій
-void Create(int* t, const int size, const int Low, const int High);
-void Print(const int* t, const int size);
-bool Criterion(int value, int index);
-int Count(const int* t, const int size);
-int Sum(const int* t, const int size);
-void Replace(int* t, const int size);
-
-int main()
-{
-    // Ініціалізація генератора випадкових чисел
-    srand(static_cast<unsigned>(time(nullptr)));
-
-    const int size = 20;    // розмір масиву за варіантом 23
-    int t[size];            // одновимірний масив t
-    const int Low = -14;    // нижня межа діапазону [-14, 7]
-    const int High = 7;     // верхня межа діапазону [-14, 7]
-
-    // 1. Формування масиву
-    Create(t, size, Low, High);
-
-    cout << "=============================================================================================" << endl;
-    cout << " Лабораторна робота № 6.1 (ітераційний спосіб) | Варіант 23" << endl;
-    cout << " Критерій: всі додатні елементи (t[i] > 0) з індексами, крім кратних 4 (i % 4 != 0)" << endl;
-    cout << "=============================================================================================" << endl;
-
-    cout << " Індекси i:         ";
-    for (int i = 0; i < size; i++)
-        cout << setw(4) << i;
-    cout << endl;
-    cout << "---------------------------------------------------------------------------------------------" << endl;
-
-    // 2. Виведення початкового масиву
-    cout << " Початковий масив:  ";
-    Print(t, size);
-
-    // 3. Обчислення кількості та суми елементів за критерієм
-    int count = Count(t, size);
-    int sum = Sum(t, size);
-
-    // 4. Заміна відібраних елементів нулями та виведення модифікованого масиву
-    Replace(t, size);
-    cout << " Модифікований (0): ";
-    Print(t, size);
-    cout << "=============================================================================================" << endl;
-
-    // 5. Виведення таблиці результатів
-    cout << "\n+-----------------------------------------------+------------+" << endl;
-    cout << "| Показник                                      |  Значення  |" << endl;
-    cout << "+-----------------------------------------------+------------+" << endl;
-    cout << "| Кількість елементів за критерієм (Count)      | " << setw(10) << count << " |" << endl;
-    cout << "| Сума елементів за критерієм (Sum)             | " << setw(10) << sum << " |" << endl;
-    cout << "+-----------------------------------------------+------------+" << endl;
-
-    return 0;
-}
-
-// Ітераційне заповнення масиву випадковими числами у діапазоні [Low, High]
+// Заповнення масиву випадковими числами у діапазоні [Low, High]
 void Create(int* t, const int size, const int Low, const int High)
 {
     for (int i = 0; i < size; i++)
@@ -89,7 +32,7 @@ bool Criterion(int value, int index)
     return (value > 0 && index % 4 != 0);
 }
 
-// Ітераційне обчислення кількості елементів за критерієм
+// Ітераційне обчислення кількості елементів, що задовольняють критерію
 int Count(const int* t, const int size)
 {
     int count = 0;
@@ -101,7 +44,7 @@ int Count(const int* t, const int size)
     return count;
 }
 
-// Ітераційне обчислення суми елементів за критерієм
+// Ітераційне обчислення суми елементів, що задовольняють критерію
 int Sum(const int* t, const int size)
 {
     int sum = 0;
@@ -121,4 +64,34 @@ void Replace(int* t, const int size)
         if (Criterion(t[i], i))
             t[i] = 0;
     }
+}
+
+int main()
+{
+    // Ініціалізація генератора випадкових чисел поточним часом
+    srand(static_cast<unsigned>(time(nullptr)));
+
+    const int size = 20;    // розмір масиву за варіантом
+    int t[size];            // одновимірний масив t
+    const int Low = -14;    // нижня межа діапазону значень
+    const int High = 7;     // верхня межа діапазону значень
+
+    // 1. Формування та виведення початкового масиву
+    Create(t, size, Low, High);
+    cout << "Original array:" << endl;
+    Print(t, size);
+
+    // 2. Обчислення кількості та суми елементів за критерієм
+    int count = Count(t, size);
+    int sum = Sum(t, size);
+
+    cout << "Count = " << count << endl;
+    cout << "Sum   = " << sum << endl;
+
+    // 3. Модифікація масиву (заміна відібраних елементів нулями) та виведення
+    Replace(t, size);
+    cout << "Modified array:" << endl;
+    Print(t, size);
+
+    return 0;
 }

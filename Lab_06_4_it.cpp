@@ -11,76 +11,6 @@
 
 using namespace std;
 
-// Прототипи функцій
-void Create(int* a, const int n, const int Low, const int High);
-void Print(const int* a, const int n);
-long long ProductEven(const int* a, const int n);
-int FirstZeroIndex(const int* a, const int n);
-int LastZeroIndex(const int* a, const int n);
-int SumBetweenZeros(const int* a, const int n);
-void Transform(int* a, const int n);
-
-int main()
-{
-    srand(static_cast<unsigned>(time(nullptr)));
-
-    int n;
-    cout << "Введіть розмір динамічного масиву n: ";
-    if (!(cin >> n) || n <= 0)
-    {
-        cout << "Помилка: розмір масиву n має бути додатним числом!" << endl;
-        return 1;
-    }
-
-    // Виділення динамічної пам'яті під масив розміром n
-    int* a = new int[n];
-    const int Low = -3;
-    const int High = 3;
-
-    // 1. Формування початкового масиву
-    Create(a, n, Low, High);
-
-    cout << "\n====================================================================================" << endl;
-    cout << " Лабораторна робота № 6.4 (ітераційний спосіб) | Варіант 23 | Розмір n = " << n << endl;
-    cout << "====================================================================================" << endl;
-
-    cout << " Індекси i:           ";
-    for (int i = 0; i < n; i++)
-        cout << setw(5) << i;
-    cout << endl;
-    cout << "------------------------------------------------------------------------------------" << endl;
-
-    // 2. Виведення початкового масиву
-    cout << " Початковий масив a:  ";
-    Print(a, n);
-
-    // 3. Обчислення характеристик за варіантом 23
-    long long prod = ProductEven(a, n);
-    int first = FirstZeroIndex(a, n);
-    int last = LastZeroIndex(a, n);
-    int sum = SumBetweenZeros(a, n);
-
-    // 4. Перетворення масиву (спочатку >= 0, потім < 0) та виведення
-    Transform(a, n);
-    cout << " Перетворений масив:  ";
-    Print(a, n);
-    cout << "====================================================================================" << endl;
-
-    // 5. Зведена таблиця результатів
-    cout << "\n+----------------------------------------------------+--------------+" << endl;
-    cout << "| Показник                                           |   Значення   |" << endl;
-    cout << "+----------------------------------------------------+--------------+" << endl;
-    cout << "| 1.1. Добуток елементів з парними індексами         | " << setw(12) << prod << " |" << endl;
-    cout << "|      Індекс першого нульового елемента             | " << setw(12) << first << " |" << endl;
-    cout << "|      Індекс останнього нульового елемента          | " << setw(12) << last << " |" << endl;
-    cout << "| 1.2. Сума елементів між першим і останнім нулями   | " << setw(12) << sum << " |" << endl;
-    cout << "+----------------------------------------------------+--------------+" << endl;
-
-    // Звільнення динамічної пам'яті
-    delete[] a;
-    return 0;
-}
-
 // Ітераційне заповнення динамічного масиву випадковими числами у діапазоні [Low, High]
 void Create(int* a, const int n, const int Low, const int High)
 {
@@ -171,4 +101,54 @@ void Transform(int* a, const int n)
         a[i] = temp[i];
 
     delete[] temp; // звільнення пам'яті тимчасового масиву
+}
+
+int main()
+{
+    srand(static_cast<unsigned>(time(nullptr)));
+
+    int n;
+    cout << "Enter array size n: ";
+    if (!(cin >> n) || n <= 0)
+    {
+        cout << "Invalid array size." << endl;
+        return 1;
+    }
+
+    // Виділення динамічної пам'яті під масив розміром n
+    int* a = new int[n];
+    const int Low = -5;
+    const int High = 5;
+
+    // 1. Формування та виведення початкового масиву
+    Create(a, n, Low, High);
+    cout << "\nInitial array:" << endl;
+    Print(a, n);
+
+    // 2. Обчислення добутку елементів з парними індексами
+    long long prod = ProductEven(a, n);
+    cout << "Product of elements with even indices: " << prod << endl;
+
+    // 3. Обчислення суми між першим і останнім нулями
+    int sum = SumBetweenZeros(a, n);
+    int first = FirstZeroIndex(a, n);
+    int last = LastZeroIndex(a, n);
+    if (first != -1 && last != -1 && first < last)
+    {
+        cout << "First zero at index: " << first << ", Last zero at index: " << last << endl;
+        cout << "Sum between first and last zero: " << sum << endl;
+    }
+    else
+    {
+        cout << "Less than two zeros found in the array (sum = 0)." << endl;
+    }
+
+    // 4. Перетворення масиву та виведення результату
+    Transform(a, n);
+    cout << "\nTransformed array (non-negative first, then negative):" << endl;
+    Print(a, n);
+
+    // Звільнення динамічної пам'яті
+    delete[] a;
+    return 0;
 }

@@ -25,3 +25,4 @@ tests/UnitTest_*
 
 # Tool cache
 .serena/
+tempCodeRunnerFile*
