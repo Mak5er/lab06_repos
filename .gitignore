@@ -1,0 +1,27 @@
+# Executables
+*.o
+*.obj
+*.exe
+*.out
+Lab_06_1_it
+Lab_06_1_rec
+Lab_06_2_it
+Lab_06_2_rec
+Lab_06_3_it
+Lab_06_3_rec
+Lab_06_4_it
+Lab_06_4_rec
+UnitTest_*
+tests/UnitTest_*
+!*.cpp
+!*.h
+!*.hpp
+
+# Debug symbols
+*.dSYM/
+
+# OS files
+.DS_Store
+
+# Tool cache
+.serena/
