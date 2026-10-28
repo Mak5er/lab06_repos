@@ -13,18 +13,20 @@ TEST_SUITE("UnitTest_06_1_rec")
 {
     TEST_CASE("Criterion check")
     {
-        CHECK(Criterion(5, 1) == true);
-        CHECK(Criterion(5, 4) == false);
-        CHECK(Criterion(-3, 1) == false);
-        CHECK(Criterion(0, 2) == false);
+        CHECK(Criterion(5, 1) == true);   // додатне, індекс 1 не кратний 4
+        CHECK(Criterion(5, 4) == false);  // індекс 4 кратний 4
+        CHECK(Criterion(-3, 1) == false); // від'ємне
+        CHECK(Criterion(0, 2) == false);  // нуль
     }
 
     TEST_CASE("Count, Sum, Replace recursive")
     {
+        // Контрольний масив: підходять елементи 3, 7, 2, 1 (кількість = 4, сума = 13)
         int arr[8] = { 5, 3, -4, 7, 6, 2, 0, 1 };
         CHECK(Count(arr, 8, 0) == 4);
         CHECK(Sum(arr, 8, 0) == 13);
 
+        // Перевірка рекурсивної заміни нулями
         Replace(arr, 8, 0);
         CHECK(arr[0] == 5);
         CHECK(arr[1] == 0);

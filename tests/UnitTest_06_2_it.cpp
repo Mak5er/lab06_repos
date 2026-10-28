@@ -14,10 +14,12 @@ TEST_SUITE("UnitTest_06_2_it")
     TEST_CASE("Swap halves iterative: n = 4, size = 8")
     {
         const int n = 4;
+        // Перша половина: {1, 2, 3, 4}, друга половина: {10, 20, 30, 40}
         int a[8] = { 1, 2, 3, 4, 10, 20, 30, 40 };
 
         SwapHalves(a, n);
 
+        // Очікуємо: {10, 20, 30, 40, 1, 2, 3, 4}
         CHECK(a[0] == 10);
         CHECK(a[1] == 20);
         CHECK(a[2] == 30);
