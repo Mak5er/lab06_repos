@@ -1,29 +1,31 @@
 CXX = clang++
 CXXFLAGS = -std=c++17 -Wall -Wextra
 
-SOURCES = Lab_06_1_it.cpp Lab_06_1_rec.cpp Lab_06_2_it.cpp Lab_06_2_rec.cpp Lab_06_3_it.cpp Lab_06_3_rec.cpp Lab_06_4_it.cpp Lab_06_4_rec.cpp
-BINARIES = $(SOURCES:.cpp=)
+TEST_SRCS = $(wildcard tests/UnitTest_*.cpp)
+TEST_BINS = $(TEST_SRCS:.cpp=)
 
-TEST_SOURCES = $(wildcard tests/UnitTest_*.cpp)
-TEST_BINARIES = $(TEST_SOURCES:.cpp=)
+LAB_SRCS = $(wildcard Lab_*.cpp)
+LAB_BINS = $(LAB_SRCS:.cpp=)
 
-all: $(BINARIES)
+.PHONY: all labs tests test clean
 
-$(BINARIES): %: %.cpp
+all: labs tests
+
+labs: $(LAB_BINS)
+
+tests: $(TEST_BINS)
+
+Lab_%: Lab_%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
-test: $(TEST_BINARIES)
-	@echo "=== Running all unit tests ==="
-	@for t in $(TEST_BINARIES); do \
-		echo "Running $$t..."; \
-		./$$t || exit 1; \
-	done
-	@echo "All unit tests passed successfully!"
+tests/UnitTest_%: tests/UnitTest_%.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@
 
-$(TEST_BINARIES): %: %.cpp
-	$(CXX) $(CXXFLAGS) -I tests $< -o $@
+test: tests
+	@for t in $(TEST_BINS); do \
+		echo "===> Running $$t <==="; \
+		$$t || exit 1; \
+	done
 
 clean:
-	rm -f $(BINARIES) $(TEST_BINARIES)
-
-.PHONY: all test clean
+	rm -f $(LAB_BINS) $(TEST_BINS)
