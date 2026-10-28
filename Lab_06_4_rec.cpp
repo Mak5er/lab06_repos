@@ -83,46 +83,37 @@ int SumBetweenZeros(const int* a, const int n)
     return SumBetween(a, last, first + 1);
 }
 
-// Рекурсивний збір усіх невід'ємних елементів (a[i] >= 0) у масив temp
-void CollectNonNegative(const int* a, int* temp, const int n, int i, int& k)
+// Допоміжна рекурсивна функція зсуву елементів праворуч на одну позицію in-place
+void ShiftRight(int* a, int j, const int target)
+{
+    if (j <= target)
+        return;
+    a[j] = a[j - 1];
+    ShiftRight(a, j - 1, target);
+}
+
+// 2. Рекурсивне перетворення масиву in-place (без виділення додаткового масиву, O(1) додаткової пам'яті):
+// переставляємо елементи так, щоб спочатку йшли всі невід'ємні (>= 0), а потім від'ємні (< 0)
+// зі збереженням їхнього відносного порядку (стабільне розбиття)
+void Transform(int* a, const int n, int i = 0, int lastPos = 0)
 {
     if (i >= n)
         return;
+
     if (a[i] >= 0)
-        temp[k++] = a[i];
-    CollectNonNegative(a, temp, n, i + 1, k);
-}
-
-// Рекурсивний збір усіх від'ємних елементів (a[i] < 0) у масив temp
-void CollectNegative(const int* a, int* temp, const int n, int i, int& k)
-{
-    if (i >= n)
-        return;
-    if (a[i] < 0)
-        temp[k++] = a[i];
-    CollectNegative(a, temp, n, i + 1, k);
-}
-
-// Рекурсивне копіювання елементів із тимчасового масиву temp назад у масив a
-void CopyBack(int* a, const int* temp, const int n, int i = 0)
-{
-    if (i >= n)
-        return;
-    a[i] = temp[i];
-    CopyBack(a, temp, n, i + 1);
-}
-
-// 2. Рекурсивне перетворення масиву зі збереженням відносного порядку елементів
-void Transform(int* a, const int n)
-{
-    int* temp = new int[n];
-    int k = 0; // лічильник заповнення temp (передається за посиланням)
-
-    CollectNonNegative(a, temp, n, 0, k); // спочатку додатні та нулі
-    CollectNegative(a, temp, n, 0, k);    // потім від'ємні
-    CopyBack(a, temp, n, 0);              // копіювання результату назад у масив a
-
-    delete[] temp;
+    {
+        if (i > lastPos)
+        {
+            int val = a[i];
+            ShiftRight(a, i, lastPos);
+            a[lastPos] = val;
+        }
+        Transform(a, n, i + 1, lastPos + 1);
+    }
+    else
+    {
+        Transform(a, n, i + 1, lastPos);
+    }
 }
 
 int main()
